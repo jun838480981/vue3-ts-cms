@@ -25,7 +25,8 @@ export default defineComponent({
   align-items: center;
   width: 100%;
   height: 100%;
-  background: url('https://pic.imgdb.cn/item/623fc2d227f86abb2a7d28d1.png');
+  // background: url('https://pic.imgdb.cn/item/623fc2d227f86abb2a7d28d1.png');
+  background: url('../../assets/img/login-bg.svg');
   background-size: 100% 100%;
 }
 </style>

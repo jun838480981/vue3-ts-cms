@@ -45,13 +45,14 @@ export default defineComponent({
     LoginPhone
   },
   setup() {
+    // ts中使用ref要添加泛型指定参数类型，不添加会根据括号内容推导，括号内容为空时类型为any
     const isKeepPassword = ref(true)
     // vue3+ts获取有ref组件实例类型 只要使用要获取组价信息使用ref类型都是这样获取
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
 
     const handleLoginClick = () => {
       console.log('登录成功')
-      accountRef.value?.loginAction()
+      accountRef.value?.loginAction(isKeepPassword.value)
     }
 
     return {
@@ -66,8 +67,9 @@ export default defineComponent({
 <style scoped lang="less">
 .login-panel {
   width: 320px;
-  margin-bottom: 200px;
-  color: #fff;
+  margin-bottom: 130px;
+  color: #409eff;
+  // color: #fff;
   .title {
     text-align: center;
   }
