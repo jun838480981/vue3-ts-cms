@@ -1,8 +1,8 @@
 <template>
   <div class="login-account">
     <el-form label-width="60px" :rules="rules" :model="account" ref="formRef">
-      <el-form-item label="账号" prop="username">
-        <el-input v-model="account.username" placeholder="请输入账号" />
+      <el-form-item label="账号" prop="name">
+        <el-input v-model="account.name" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
@@ -17,18 +17,18 @@
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-// import { useRouter } from 'vue-router'
 import { ElForm } from 'element-plus'
-
+import { useStore } from 'vuex'
 import { rules } from '../config/account-config'
 import localCache from '@/utils/cache'
 
 export default defineComponent({
   setup() {
-    // const router = useRouter()
+    const store = useStore()
+
     const account = reactive({
       // 如果存在缓存，优先使用缓存
-      username: localCache.getCache('username') ?? '',
+      name: localCache.getCache('name') ?? '',
       password: localCache.getCache('password') ?? ''
     })
     const formRef = ref<InstanceType<typeof ElForm>>()
@@ -37,14 +37,17 @@ export default defineComponent({
       // 获取验证的回调结果(Boolean)
       formRef.value?.validate((vaild) => {
         if (vaild) {
+          // 1.判断是否要记住密码
           if (isKeepPassword) {
-            // 勾选记住密码
-            localCache.setCache('username', account.username)
+            // 勾选记住密码 添加本地缓存
+            localCache.setCache('name', account.name)
             localCache.setCache('password', account.password)
           } else {
-            localCache.deleteCache('username')
+            localCache.deleteCache('name')
             localCache.deleteCache('password')
           }
+          // 2.开始进行登录验证
+          store.dispatch('login/accountLoginAction', { ...account })
         }
       })
     }

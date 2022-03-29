@@ -2,14 +2,16 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from '@/router'
 import store from '@/store'
+import { setupStore } from '@/store'
 import globalRegister from './global' /**element-plus导入 */
-// import jcRequest from './service'
+
 import 'normalize.css'
 import './assets/css/index.less'
 
 const app = createApp(App)
 
 app.use(router).use(store).use(globalRegister)
+setupStore()
 
 app.mount('#app')
 

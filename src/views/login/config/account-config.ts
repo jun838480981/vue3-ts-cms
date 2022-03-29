@@ -1,6 +1,6 @@
 // 编写表单规则
 export const rules = {
-  username: [
+  name: [
     {
       required: true,
       message: '账号不能为空~',

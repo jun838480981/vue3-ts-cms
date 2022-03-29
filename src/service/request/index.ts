@@ -34,7 +34,6 @@ class JCRequest {
     // 添加所有实例都有的拦截器(不同的实例所有的请求)
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有实例请求成功拦截')
         if (this.showLoading === true) {
           this.loading = ElLoading.service({
             lock: true,
@@ -51,11 +50,8 @@ class JCRequest {
     )
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有实例响应成功拦截')
-
         // 将loading移除
         this.loading?.close()
-
         const data = res.data
         if (data.returnCode === '-1001') {
           console.log('请求失败~，错误信息')

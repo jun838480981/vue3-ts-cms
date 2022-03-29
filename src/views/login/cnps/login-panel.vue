@@ -1,8 +1,9 @@
 <template>
   <div class="login-panel">
     <h1 class="title">Login to System</h1>
-    <el-tabs stretch type="border-card">
-      <el-tab-pane>
+
+    <el-tabs v-model="currentTab" stretch type="border-card">
+      <el-tab-pane name="account">
         <template #label>
           <span class="tab-pane">
             <el-icon class="icon"><user-filled /></el-icon>
@@ -11,13 +12,13 @@
         </template>
         <login-account ref="accountRef" />
       </el-tab-pane>
-      <el-tab-pane>
+      <el-tab-pane name="phone">
         <template #label>
           <span class="tab-pane">
             <el-icon class="icon"><iphone /></el-icon><span> 手机登录</span>
           </span>
         </template>
-        <login-phone />
+        <login-phone ref="phoneRef" />
       </el-tab-pane>
     </el-tabs>
 
@@ -49,16 +50,27 @@ export default defineComponent({
     const isKeepPassword = ref(true)
     // vue3+ts获取有ref组件实例类型 只要使用要获取组价信息使用ref类型都是这样获取
     const accountRef = ref<InstanceType<typeof LoginAccount>>()
+    const phoneRef = ref<InstanceType<typeof LoginPhone>>()
+    const currentTab = ref('account')
 
+    // 定义方法
     const handleLoginClick = () => {
       console.log('登录成功')
-      accountRef.value?.loginAction(isKeepPassword.value)
+      // 切换登录方式
+      if (currentTab.value === 'account') {
+        accountRef.value?.loginAction(isKeepPassword.value)
+      } else {
+        console.log('调用phoneRef中的loginAction函数')
+      }
     }
 
     return {
       isKeepPassword,
-      handleLoginClick,
-      accountRef
+      accountRef,
+      phoneRef,
+      currentTab,
+
+      handleLoginClick
     }
   }
 })
@@ -68,8 +80,8 @@ export default defineComponent({
 .login-panel {
   width: 320px;
   margin-bottom: 130px;
-  color: #409eff;
-  // color: #fff;
+  // color: #409eff;
+  color: #fff;
   .title {
     text-align: center;
   }
