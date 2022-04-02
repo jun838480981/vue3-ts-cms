@@ -84,6 +84,10 @@ export default defineComponent({
   color: #fff;
   .title {
     text-align: center;
+    background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+    background-clip: text;
+    color: transparent;
+    height: 40px;
   }
   .tab-pane .icon {
     vertical-align: -15%;

@@ -6,6 +6,7 @@ import {
 
 import localCache from '@/utils/cache'
 import router from '@/router'
+import { mapMenusToRoutes } from '@/utils/map-menus'
 
 import type { Module } from 'vuex'
 import type { IRootState } from '../types'
@@ -30,6 +31,14 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // userMenus -> routes
+      const routes = mapMenusToRoutes(userMenus)
+
+      // 将routes -> route.main.children
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   getters: {},
@@ -50,13 +59,26 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 3.请求用户菜单
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
-      const userMenus = userMenusResult.data
+      let userMenus = userMenusResult.data
+      // 转换接口中的icon
+      userMenus = userMenus.map((item: any) => {
+        const icon: string = item.icon
+        const upIcon: string[] = icon
+          .slice(8)
+          .split('-')
+          .map((str) => {
+            return str.replace(str[0], str[0].toUpperCase())
+          })
+        item.icon = upIcon.join('')
+        return item
+      })
       commit('changeUserMenus', userMenus)
       localCache.setCache('userMenus', userMenus)
 
       // 4.跳到首页
       router.push('/main')
     },
+    // 刷新或者直接加载时重新获取数据并保存至本地缓存中
     loadLocalLogin({ commit }) {
       const token = localCache.getCache('token')
       if (token) {

@@ -1,6 +1,16 @@
 import type { App } from 'vue'
 import 'element-plus/dist/index.css'
-import { UserFilled, Iphone } from '@element-plus/icons-vue'
+// 导入图标组件
+import {
+  UserFilled,
+  Iphone,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Fold,
+  Expand
+} from '@element-plus/icons-vue'
 
 import {
   ElButton,
@@ -16,12 +26,33 @@ import {
   ElContainer,
   ElHeader,
   ElAside,
-  ElMain
+  ElMain,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElOption,
+  ElDatePicker
 } from 'element-plus'
 
 const components = [
   UserFilled,
   Iphone,
+  Monitor,
+  Setting,
+  Goods,
+  ChatLineRound,
+  Fold,
+  Expand,
   ElButton,
   ElForm,
   ElFormItem,
@@ -35,7 +66,22 @@ const components = [
   ElContainer,
   ElHeader,
   ElAside,
-  ElMain
+  ElMain,
+  ElMenu,
+  ElMenuItem,
+  ElMenuItemGroup,
+  ElSubMenu,
+  ElDropdown,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElAvatar,
+  ElBreadcrumb,
+  ElBreadcrumbItem,
+  ElRow,
+  ElCol,
+  ElSelect,
+  ElOption,
+  ElDatePicker
 ]
 
 export default function (app: App): void {
