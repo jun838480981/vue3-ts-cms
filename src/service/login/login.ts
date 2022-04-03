@@ -1,6 +1,7 @@
 import jcRequest from '../index'
 
-import type { IAccount, IDataType, ILoginResult } from './types'
+import type { IDataType } from '../types'
+import type { IAccount, ILoginResult } from './types'
 
 // 将所有的url提取出来，方便修改
 enum LoginAPI {

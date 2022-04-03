@@ -2,6 +2,7 @@ type IFormType = 'input' | 'password' | 'select' | 'datepicker'
 
 // formItems的类型
 export interface IFormItem {
+  field: string
   type: IFormType
   label: string
   rules?: any[]

@@ -12,7 +12,7 @@ import type { Module } from 'vuex'
 import type { IRootState } from '../types'
 import type { ILoginState } from './types'
 
-// ts中要导入Module类型并且传递两个泛型类型<模块中的state, 根中的state>
+// ts中要导入使用Module类型并且传递两个泛型<模块中的state类型, 根中的state类型>
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
   state() {

@@ -1,27 +1,42 @@
 <template>
   <div class="user">
-    <div class="search">
-      <!-- 直接使用配置文件里面的属性 -->
-      <jc-form v-bind="formConfig" />
-    </div>
-    <div class="content"></div>
+    <page-search :searchFormConfig="searchFormConfig" />
+    <el-table :data="userList" border style="width: 100%">
+      <el-table-column prop="name" label="用户名" min-width="180" />
+      <el-table-column prop="realname" label="真实姓名" min-width="180" />
+      <el-table-column prop="cellphone" label="电话号码" min-width="180" />
+    </el-table>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import JcForm from '@/base-ui/form'
+import { defineComponent, computed } from 'vue'
+import { useStore } from '@/store'
 // 直接获取封装好的配置文件 使代码结果简洁
-import { formConfig } from './config/search.config'
+import { searchFormConfig } from './config/search.config'
+import PageSearch from '@/components/page-search'
 
 export default defineComponent({
-  components: {
-    JcForm
-  },
   name: 'user',
+  components: { PageSearch },
   setup() {
+    const store = useStore()
+    // 派发事件进行网络请求获取数据
+    store.dispatch('system/getListAction', {
+      pageUrl: 'users/list',
+      queryInfo: {
+        offset: 0,
+        size: 10
+      }
+    })
+
+    // 拿到vuex中保存好的数据
+    const userList = computed(() => store.state.system.userList)
+    const userCount = computed(() => store.state.system.usercount)
     return {
-      formConfig
+      userList,
+      userCount,
+      searchFormConfig
     }
   }
 })

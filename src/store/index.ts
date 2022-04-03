@@ -1,20 +1,24 @@
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
 
 import type { IRootState, IRootType } from './types'
+// 导入模块
 import login from './login/login'
+import system from './main/system/system'
 
 // createStore接收一个泛型，泛型就是state的类型
 const store = createStore<IRootState>({
   state() {
     return {
-      name: 'kobe'
+      name: 'kobe',
+      age: 24
     }
   },
   mutations: {},
   getters: {},
   actions: {},
   modules: {
-    login
+    login,
+    system
   }
 })
 

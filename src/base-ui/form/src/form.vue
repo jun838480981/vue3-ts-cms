@@ -1,5 +1,6 @@
 <template>
   <div class="jc-form">
+    <div class="header"><slot name="header"></slot></div>
     <el-form :label-width="labalWidth">
       <el-row>
         <template v-for="item in formItems" :key="item.label">
@@ -16,6 +17,7 @@
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
                   v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
@@ -23,6 +25,7 @@
                   style="width: 100%"
                   :placeholder="item.placeholder"
                   v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
                 >
                   <el-option
                     v-for="option in item.options"
@@ -36,6 +39,7 @@
                 <el-date-picker
                   style="width: 100%"
                   v-bind="item.otherOptions"
+                  v-model="formData[`${item.field}`]"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -43,11 +47,12 @@
         </template>
       </el-row>
     </el-form>
+    <div class="footer"><slot name="footer"></slot></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 
 import { IFormItem } from '../types'
 
@@ -55,6 +60,10 @@ export default defineComponent({
   // PropType vue3加TS语法 给数组相应类型的方法
   // 通过配置文件来对组件进行创建
   props: {
+    modelValue: {
+      type: Object,
+      required: true
+    },
     formItems: {
       type: Array as PropType<IFormItem[]>,
       default: () => []
@@ -78,8 +87,19 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {}
+
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const formData = ref({ ...props.modelValue })
+    watch(
+      formData,
+      (newValue) => {
+        emit('update:modelValue', newValue)
+      },
+      // 进行深度监听
+      { deep: true }
+    )
+    return { formData }
   }
 })
 </script>

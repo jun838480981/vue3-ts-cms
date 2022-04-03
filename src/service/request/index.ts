@@ -74,7 +74,7 @@ class JCRequest {
     )
   }
 
-  request<T>(config: JCRequestConfig<T>): Promise<T> {
+  request<T = any>(config: JCRequestConfig<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       // 如果单个请求request中传递了请求拦截函数 将调用传递过来的请求拦截函数对 config进行处理(同一个实例不同的请求)
       if (config.interceptors?.requestInterceptors) {
@@ -115,19 +115,19 @@ class JCRequest {
     })
   }
 
-  get<T>(config: JCRequestConfig<T>): Promise<T> {
+  get<T = any>(config: JCRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' })
   }
 
-  post<T>(config: JCRequestConfig<T>): Promise<T> {
+  post<T = any>(config: JCRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' })
   }
 
-  delete<T>(config: JCRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: JCRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' })
   }
 
-  patch<T>(config: JCRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: JCRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' })
   }
 }

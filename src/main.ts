@@ -10,8 +10,11 @@ import './assets/css/index.less'
 
 const app = createApp(App)
 
-app.use(router).use(store).use(globalRegister)
+app.use(store)
+app.use(globalRegister)
 setupStore()
+// 先注册映射关系，在对路由进行加载，解决页面刷新时路由跳转到notFound的情况
+app.use(router)
 
 app.mount('#app')
 

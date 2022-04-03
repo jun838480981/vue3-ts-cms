@@ -8,6 +8,8 @@ import { RouteRecordRaw } from 'vue-router'
 
 import localCache from '@/utils/cache'
 
+import { firstMenu } from '@/utils/map-menus'
+
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -22,6 +24,7 @@ const routes: RouteRecordRaw[] = [
     path: '/main',
     name: 'main',
     component: () => import('@/views/main/main.vue')
+    // children: [] 动态加载
   },
   {
     path: '/:pathMatch(.*)*',
@@ -48,6 +51,11 @@ router.beforeEach((to) => {
       console.log('已登录')
       return '/main'
     }
+  }
+
+  // 准备跳转到main时，进行重定向到第一个加载的子路由中
+  if (to.path === '/main') {
+    return firstMenu.url
   }
 })
 

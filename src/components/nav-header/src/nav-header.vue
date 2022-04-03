@@ -5,30 +5,48 @@
     </el-icon>
 
     <div class="content">
-      <div>面包屑</div>
+      <jc-breadcrumb :breadcrumbs="breadcrumbs" />
       <user-info />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from '@/store'
 
 import UserInfo from './cpns/user-info.vue'
+import JcBreadcrumb from '@/base-ui/breadcrumb'
+import { pathMapToBreadcrumbs } from '@/utils/map-menus'
 
 export default defineComponent({
   components: {
-    UserInfo
+    UserInfo,
+    JcBreadcrumb
   },
   emits: ['foldChange'],
   setup(prop, { emit }) {
     const isFold = ref(false)
+
+    const store = useStore()
+
+    // 面包屑数据 [{name: , path: }]
+    const breadcrumbs = computed(() => {
+      const userMenus = store.state.login.userMenus
+      const route = useRoute()
+      const currentPath = route.path
+      return pathMapToBreadcrumbs(userMenus, currentPath)
+    })
+
     const handleFoldClick = () => {
       isFold.value = !isFold.value
       emit('foldChange', isFold.value)
     }
+
     return {
       isFold,
+      breadcrumbs,
       handleFoldClick
     }
   }
