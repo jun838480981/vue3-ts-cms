@@ -9,7 +9,8 @@ import {
   Goods,
   ChatLineRound,
   Fold,
-  Expand
+  Expand,
+  Plus
 } from '@element-plus/icons-vue'
 
 import {
@@ -41,7 +42,10 @@ import {
   ElCol,
   ElSelect,
   ElOption,
-  ElDatePicker
+  ElDatePicker,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 } from 'element-plus'
 
 const components = [
@@ -53,6 +57,7 @@ const components = [
   ChatLineRound,
   Fold,
   Expand,
+  Plus,
   ElButton,
   ElForm,
   ElFormItem,
@@ -81,7 +86,10 @@ const components = [
   ElCol,
   ElSelect,
   ElOption,
-  ElDatePicker
+  ElDatePicker,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 ]
 
 export default function (app: App): void {
