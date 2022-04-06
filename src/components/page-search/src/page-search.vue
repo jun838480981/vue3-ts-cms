@@ -60,6 +60,8 @@ export default defineComponent({
     // 3.优化三：当用户点击搜索
     const handleQueryClick = () => {
       // 将搜索框的数据传递给父组件
+      console.log(formData.value)
+
       emit('queryBtnClick', formData.value)
     }
 

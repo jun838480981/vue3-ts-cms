@@ -6,7 +6,7 @@ import {
 
 import localCache from '@/utils/cache'
 import router from '@/router'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToRoutes, mapMenuToPermissions } from '@/utils/map-menus'
 
 import type { Module } from 'vuex'
 import type { IRootState } from '../types'
@@ -19,7 +19,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   mutations: {
@@ -39,6 +40,10 @@ const loginModule: Module<ILoginState, IRootState> = {
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户按钮权限
+      const permissions = mapMenuToPermissions(userMenus)
+      state.permissions = permissions
     }
   },
   getters: {},

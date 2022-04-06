@@ -7,14 +7,18 @@ export const searchFormConfig: IForm = {
     {
       field: 'name',
       type: 'input',
-      label: '角色名称',
-      placeholder: '请输入角色名称'
+      label: '商品名称',
+      placeholder: '请输入商品名称'
     },
     {
-      field: 'intro',
-      type: 'input',
-      label: '权限介绍',
-      placeholder: '请输入权限介绍'
+      field: 'status',
+      type: 'select',
+      label: '商品状态',
+      placeholder: '请选择商品状态',
+      options: [
+        { title: '上架', value: 1 },
+        { title: '下架', value: 0 }
+      ]
     },
     {
       field: 'createAt',

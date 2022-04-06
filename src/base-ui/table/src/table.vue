@@ -13,6 +13,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <el-table-column
         v-if="showSelectColumn"
@@ -29,7 +30,7 @@
         align="center"
       ></el-table-column>
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <slot :name="propItem.slotName" :row="scope.row">
               {{ scope.row[propItem.prop] }}
@@ -38,7 +39,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
@@ -87,6 +88,14 @@ export default defineComponent({
     page: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['selectionChange', 'update:page'],
@@ -97,8 +106,8 @@ export default defineComponent({
     const handleSizeChange = (pageSize: number) => {
       emit('update:page', { ...props.page, pageSize })
     }
-    const handleCurrentChange = (currentChange: number) => {
-      emit('update:page', { ...props.page, currentChange })
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:page', { ...props.page, currentPage })
     }
     return {
       handleSelectionChange,
@@ -110,29 +119,31 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.header {
-  display: flex;
-  height: 45px;
-  padding: 0 5px 20px;
-  justify-content: space-between;
-  align-items: center;
-
-  .title {
-    font-size: 20px;
-    font-weight: 700;
-  }
-
-  .handler {
-    align-items: center;
-  }
-}
-
-.footer {
-  margin-top: 15px;
-
-  .el-pagination {
+.jc-table {
+  .header {
     display: flex;
-    justify-content: flex-end;
+    height: 45px;
+    padding: 0 5px 20px;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .handler {
+      align-items: center;
+    }
+  }
+
+  .footer {
+    margin-top: 15px;
+
+    .el-pagination {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 }
 </style>
