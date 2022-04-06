@@ -16,7 +16,7 @@ export interface IFormItem {
 // formConfig的类型
 export interface IForm {
   formItems: IFormItem[]
-  labalWidth: string
-  itemStyle: any
-  colLayout: any
+  labalWidth?: string
+  itemStyle?: any
+  colLayout?: any
 }

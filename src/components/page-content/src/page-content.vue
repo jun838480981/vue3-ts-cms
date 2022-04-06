@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <jc-table :listData="userList" v-bind="contentTableConfig">
+    <jc-table
+      :listData="dataList"
+      :listCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:page="pageInfo"
+    >
       <!-- header中的插槽 -->
       <template #headerHandler>
         <el-button type="primary">
@@ -39,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '@/store'
 import JcTable from '@/base-ui/table'
 
@@ -53,33 +58,55 @@ declare module '@vue/runtime-core' {
 }
 
 export default defineComponent({
+  components: {
+    JcTable
+  },
   props: {
     contentTableConfig: {
       type: Object,
       required: true
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
-  components: {
-    JcTable
-  },
-  setup() {
+  setup(props) {
     const store = useStore()
+
+    // 双向绑定page信息
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    // 监听变化,重新进行页面请求
+    watch(pageInfo, () => getPageData())
+
     // 派发事件进行网络请求获取数据
-    store.dispatch('system/getListAction', {
-      pageUrl: 'users/list',
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
-    })
+    const getPageData = (queryInfo: any = {}) => {
+      store.dispatch('system/getListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          ...queryInfo
+        }
+      })
+    }
+    getPageData()
 
     // 拿到vuex中保存好的数据
-    const userList = computed(() => store.state.system.userList)
-    // const userCount = computed(() => store.state.system.usercount)
+    const dataList = computed(() =>
+      store.getters['system/pageListData'](props.pageName)
+    )
+    const dataCount = computed(() =>
+      store.getters['system/pageListCount'](props.pageName)
+    )
     return {
       Edit,
       Delete,
-      userList
+      dataList,
+      dataCount,
+      pageInfo,
+
+      getPageData
     }
   }
 })

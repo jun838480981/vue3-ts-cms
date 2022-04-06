@@ -41,9 +41,13 @@
     <div class="footer">
       <slot name="footer">
         <el-pagination
-          :page-sizes="[100, 200, 300, 400]"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :page-sizes="[10, 20, 30]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
         />
       </slot>
     </div>
@@ -54,7 +58,6 @@
 import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
-  emits: ['selectionChange'],
   props: {
     title: {
       type: String,
@@ -64,6 +67,10 @@ export default defineComponent({
     listData: {
       type: Array,
       required: true
+    },
+    listCount: {
+      type: Number,
+      default: 0
     },
     propList: {
       type: Array as PropType<any[]>,
@@ -76,14 +83,27 @@ export default defineComponent({
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
     }
   },
+  emits: ['selectionChange', 'update:page'],
   setup(props, { emit }) {
     const handleSelectionChange = (value: any) => {
       emit('selectionChange', value)
     }
+    const handleSizeChange = (pageSize: number) => {
+      emit('update:page', { ...props.page, pageSize })
+    }
+    const handleCurrentChange = (currentChange: number) => {
+      emit('update:page', { ...props.page, currentChange })
+    }
     return {
-      handleSelectionChange
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })
