@@ -11,9 +11,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确认</el-button
-          >
+          <el-button type="primary" @click="handleConfirmClick">确认</el-button>
         </span>
       </template>
     </el-dialog>
@@ -22,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
+import { useStore } from '@/store'
 
 import JcForm from '@/base-ui/form'
 
@@ -37,12 +36,18 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   setup(props) {
     const dialogVisible = ref(false)
     const formData = ref<any>({})
+    const store = useStore()
 
+    // 编辑时的回显
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -52,9 +57,29 @@ export default defineComponent({
       }
     )
 
+    // 点击确定按钮的逻辑
+    const handleConfirmClick = () => {
+      dialogVisible.value = false
+      if (Object.keys(props.defaultInfo).length) {
+        // 编辑
+        store.dispatch('system/editPageDataAction', {
+          pageName: props.pageName,
+          editData: { ...formData.value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        // 新建
+        store.dispatch('system/createPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...formData.value }
+        })
+      }
+    }
+
     return {
       dialogVisible,
-      formData
+      formData,
+      handleConfirmClick
     }
   }
 })
