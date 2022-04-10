@@ -43,7 +43,9 @@ export default defineComponent({
 
     const handleLogout = () => {
       localCache.deleteCache('token')
-      router.push('/login')
+      // localCache.deleteCache('userInfo')
+      // localCache.deleteCache('userMenus')
+      router.push('/main')
     }
     return {
       name,

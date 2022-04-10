@@ -1,5 +1,6 @@
 import { IForm } from '@/base-ui/form/types'
 export const modalConfig: IForm = {
+  title: '用户',
   formItems: [
     {
       field: 'name',

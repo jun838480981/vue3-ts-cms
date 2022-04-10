@@ -2,7 +2,7 @@ import { IForm } from '@/base-ui/form'
 // 将所有的配置属性单独封装成一个配置文件，使用直接v-bind="formConfig" 绑定到组件标签上
 export const searchFormConfig: IForm = {
   // label的宽度
-  labalWidth: '120px',
+  labelWidth: '120px',
   // formItem的边距
   itemStyle: {
     padding: '10px 40px'

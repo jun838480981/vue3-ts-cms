@@ -1,7 +1,7 @@
 import { IForm } from '@/base-ui/form'
 // 将所有的配置属性单独封装成一个配置文件，使用直接v-bind="formConfig" 绑定到组件标签上
 export const searchFormConfig: IForm = {
-  labalWidth: '120px',
+  labelWidth: '120px',
   // 根据这里进行组件的配置，输入不同的属性进行页面配置加载
   formItems: [
     {

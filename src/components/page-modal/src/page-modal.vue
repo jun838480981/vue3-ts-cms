@@ -2,12 +2,13 @@
   <div class="page-modal">
     <el-dialog
       v-model="dialogVisible"
-      title="新建"
+      :title="handleName + modalConfig.title"
       width="30%"
       center
       destroy-on-close
     >
       <jc-form v-bind="modalConfig" v-model="formData"></jc-form>
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -37,6 +38,10 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
+    },
     pageName: {
       type: String,
       required: true
@@ -44,6 +49,7 @@ export default defineComponent({
   },
   setup(props) {
     const dialogVisible = ref(false)
+    const handleName = ref('新建')
     const formData = ref<any>({})
     const store = useStore()
 
@@ -64,20 +70,21 @@ export default defineComponent({
         // 编辑
         store.dispatch('system/editPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formData.value },
+          editData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         // 新建
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       }
     }
 
     return {
       dialogVisible,
+      handleName,
       formData,
       handleConfirmClick
     }
@@ -85,4 +92,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.el-dialog__header {
+  color: red;
+}
+</style>

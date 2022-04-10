@@ -75,6 +75,7 @@ import JcTable from '@/base-ui/table'
 import { usePermission } from '@/hooks/use-permission'
 
 import { Edit, Delete } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 // 定义了全局方法后需要扩充类型
 declare module '@vue/runtime-core' {
@@ -147,11 +148,28 @@ export default defineComponent({
 
     // 5. 删除/修改/新增操作
     const handleDeleteClick = (item: any) => {
-      // 传递pageName和id进行拼接成url
-      store.dispatch('system/deletePageDataAction', {
-        pageName: props.pageName,
-        id: item.id
+      ElMessageBox.confirm('确定要删除这条信息?', 'Warning', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          // 传递pageName和id进行拼接成url
+          store.dispatch('system/deletePageDataAction', {
+            pageName: props.pageName,
+            id: item.id
+          })
+          // ElMessage({
+          //   type: 'success',
+          //   message: '删除成功'
+          // })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: '已取消'
+          })
+        })
     }
 
     const handleNewClick = () => {
