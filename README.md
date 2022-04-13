@@ -35,6 +35,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 #### 介绍
 基于vue3+TS开发的后台管理项目
 
+#### 介绍网址
+https://jc8384.rth.app
+
 #### 软件架构
 软件架构说明
 
